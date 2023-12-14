@@ -1,0 +1,51 @@
+package dev.patika.VetAPI.mapper;
+
+import dev.patika.VetAPI.dto.request.AppointmentRequest;
+import dev.patika.VetAPI.dto.response.AppointmentResponse;
+import dev.patika.VetAPI.entity.Appointment;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
+import org.mapstruct.factory.Mappers;
+
+import java.time.LocalTime;
+import java.util.List;
+
+@Mapper(componentModel = "spring")
+public interface AppointmentMapper {
+    AppointmentMapper INSTANCE = Mappers.getMapper(AppointmentMapper.class);
+
+    @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart", qualifiedByName = "mapToLocalTime")
+    @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd", qualifiedByName = "mapToLocalTime")
+    Appointment asEntity(AppointmentRequest appointmentRequest);
+
+    @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart", qualifiedByName = "mapToLocalTime")
+    @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd", qualifiedByName = "mapToLocalTime")
+    AppointmentResponse asResponse(Appointment appointment);
+
+    List<AppointmentResponse> asResponseList(List<Appointment> appointments);
+
+    @Mapping(target = "doctorId", source = "doctor.id")
+    @Mapping(target = "animalId", source = "animal.id")
+    @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart", qualifiedByName = "mapToLocalTime")
+    @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd", qualifiedByName = "mapToLocalTime")
+    @Named("asResponseWithIds")
+    AppointmentResponse asResponseWithIds(Appointment appointment);
+
+    @Mapping(target = "doctor.id", source = "doctorId")
+    @Mapping(target = "animal.id", source = "animalId")
+    @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart", qualifiedByName = "mapToLocalTime")
+    @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd", qualifiedByName = "mapToLocalTime")
+    Appointment fromRequestWithIds(AppointmentRequest request);
+
+    @Mapping(target = "doctor", ignore = true)
+    @Mapping(target = "animal", ignore = true)
+    void update(@MappingTarget Appointment entity, AppointmentRequest request);
+
+    @Named("mapToLocalTime")
+    default LocalTime mapToLocalTime(String time) {
+        return time != null ? LocalTime.parse(time) : null;
+    }
+
+}
