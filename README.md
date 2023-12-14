@@ -12,9 +12,9 @@ Bu proje, veteriner randevularını yönetmek ve takip etmek amacıyla geliştir
 
 ## Kullanılan Teknolojiler
 
-- [Spring Boot]([https://www.example.com](https://spring.io/projects/spring-boot)https://spring.io/projects/spring-boot)
-- [Maven]([https://www.example.com](https://maven.apache.org/download.cgi))
-- [JAva]([https://www.example.com](https://www.oracle.com/java/technologies/downloads/)https://www.oracle.com/java/technologies/downloads/)
-- [Postgre SQL]([https://www.example.com](https://www.postgresql.org/download/)https://www.postgresql.org/download/)
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [Maven](https://maven.apache.org/download.cgi)
+- [JAva](https://www.oracle.com/java/technologies/downloads/)
+- [Postgre SQL](https://www.postgresql.org/download/)
 
 
