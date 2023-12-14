@@ -37,3 +37,6 @@ spring.datasource.username=postgre
 spring.datasource.password=1234
 
 ```
+4. Projeyi derleyin ve çalıştırın
+   
+`mvn spring-boot:run`
