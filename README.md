@@ -1,6 +1,20 @@
-# Veterinary API
+# VetAPI Veteriner Randevu Takip Sistemi
 
-## Bu projede, Java Spring Boot kullanarak bir Veterine API uygulaması geliştirdim.
+Bu proje, veteriner randevularını yönetmek ve takip etmek amacıyla geliştirilmiş bir sistemdir.
 
-## Proje katmanlı mimari ile oluşturuldu, front-end arayüz ile iletişim controller sınıfları tarafından sağlanmaktadır.
+## Sınıflar
+- Customer
+- Doctor
+- Animal
+- Vaccine
+- Appointment
+- AvailableDate
+
+## Kullanılan Teknolojiler
+
+- [Spring Boot]([https://www.example.com](https://spring.io/projects/spring-boot)https://spring.io/projects/spring-boot)
+- [Maven]([https://www.example.com](https://maven.apache.org/download.cgi))
+- [JAva]([https://www.example.com](https://www.oracle.com/java/technologies/downloads/)https://www.oracle.com/java/technologies/downloads/)
+- [Postgre SQL]([https://www.example.com](https://www.postgresql.org/download/)https://www.postgresql.org/download/)
+
 
