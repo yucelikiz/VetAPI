@@ -20,5 +20,5 @@ public class AnimalResponse {
     private String gender;
     private String color;
     private LocalDate birthDate;
-    private Customer customer;
+    private Long customerId;
 }
