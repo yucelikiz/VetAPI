@@ -10,7 +10,8 @@ Bu proje, veteriner randevularını yönetmek ve takip etmek amacıyla geliştir
 - Appointment
 - AvailableDate
   
-![VetAPI UML](https://github.com/yucelikiz/VetAPI/assets/97850432/947404b9-9d33-44cd-9f0f-049c958bed2d)
+![Uml diagram update](https://github.com/yucelikiz/VetAPI/assets/97850432/acfe29fa-2869-4aed-9595-c34cfa5f524d)
+
 
 ## Kullanılan Teknolojiler
 
