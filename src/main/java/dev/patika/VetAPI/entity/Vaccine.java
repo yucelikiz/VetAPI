@@ -25,6 +25,10 @@ public class Vaccine {
     private LocalDate protectionEndDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "report_id", referencedColumnName = "id")
+    private Report report;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "animal_id", referencedColumnName = "id")
     private Animal animal;
 }

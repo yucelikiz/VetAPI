@@ -5,15 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class VaccineResponse {
+public class ReportResponse {
     private Long id;
-    private String name;
-    private String code;
-    private String protectionStartDate;
-    private String protectionEndDate;
-    private Long animalId;
+    private String title;
+    private String diagnosis;
+    private Double price;
+    private Long appointmentId;
+    private List<Long> vaccineIds;
 }

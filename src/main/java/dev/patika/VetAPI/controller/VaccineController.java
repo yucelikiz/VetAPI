@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/vaccine")
+@RequestMapping("/v1/vaccine")
 @RequiredArgsConstructor
 public class VaccineController {
 

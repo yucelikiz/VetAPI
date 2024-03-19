@@ -23,6 +23,9 @@ public class Appointment {
     private LocalTime appointmentTimeStart;
     private LocalTime appointmentTimeEnd;
 
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)
+    private Report report;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
