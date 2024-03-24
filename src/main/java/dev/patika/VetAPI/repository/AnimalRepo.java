@@ -20,7 +20,6 @@ public interface AnimalRepo extends JpaRepository<Animal, Long> {
 
     Optional<Animal> findByCustomerIdAndNameAndSpeciesAndBreed (Long customerId, String name, String species, String breed);
 
-    @Query("SELECT a FROM Animal a JOIN a.customer c WHERE lower(c.name) = lower(:customerName)")
-    List<Animal> findByCustomerName(@Param("customerName") String customerName);
+    List<Animal> findByCustomerName( String customerName);
 
 }
