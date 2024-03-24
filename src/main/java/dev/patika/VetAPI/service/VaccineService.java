@@ -22,20 +22,22 @@ public class VaccineService {
     private final VaccineMapper vaccineMapper;
     private final AnimalMapper animalMapper;
 
-    public List<VaccineResponse> findAll() {
-        List<Vaccine> vaccineList = vaccineRepo.findAll();
-        return vaccineMapper.asResponseList(vaccineList);
-    }
+    public List<VaccineResponse> findAll() {return vaccineMapper.asOutput(vaccineRepo.findAll());}
+
 
     public VaccineResponse getById(Long id) {
-        Vaccine vaccine = vaccineRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException(id + "id'li aşı bulunamadı!"));
-        return vaccineMapper.asResponseWithAnimalId(vaccine);
+        return vaccineMapper.asResponse(vaccineRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException(id + "id'li aşı bulunamadı!")));
+    }
+
+    public List<VaccineResponse> getByName(String name) {
+        List<Vaccine> vaccineList = vaccineRepo.findByName(name);
+        return vaccineMapper.asOutput(vaccineList);
     }
 
     public List<VaccineResponse> getByAnimalId(Long animalId) {
-        List<Vaccine> vaccineList = vaccineRepo.findByAnimal_Id(animalId);
-        return vaccineMapper.asResponseList(vaccineList);
+        List<Vaccine> vaccineList = vaccineRepo.findByAnimalId(animalId);
+        return vaccineMapper.asOutput(vaccineList);
     }
 
     public List<AnimalResponse> findAnimalsByVaccineProtectionEndDateBetween(LocalDate startDate, LocalDate endDate) {
@@ -43,52 +45,53 @@ public class VaccineService {
         return animalMapper.asOutput(animals);
     }
 
-    public VaccineResponse create(VaccineRequest vaccineRequest) {
-        // Check if there is another vaccine with the same code, name and animalId
-        Optional<Vaccine> isVaccineExist = Optional.ofNullable(vaccineRepo.findByCode(vaccineRequest.getCode()));
+    public VaccineResponse create(VaccineRequest request) {
+        //  Check if there is another vaccine with the same code, name and animalId
+        Optional<Vaccine> isVaccineExist = Optional.ofNullable(vaccineRepo.findByCode(request.getCode()));
 
         if (isVaccineExist.isEmpty()) {
             // Check if a vaccine with the same name, code, and associated animal ID
             // has protection end date before the current date
             Optional<Vaccine> vaccineWithSameDetails = vaccineRepo.findByNameAndCodeAndAnimal_Id(
-                    vaccineRequest.getName(),
-                    vaccineRequest.getCode(),
-                    vaccineRequest.getAnimalId()
+                    request.getName(),
+                    request.getCode(),
+                    request.getAnimalId()
             );
             if (vaccineWithSameDetails.isPresent() && vaccineWithSameDetails.get().getProtectionEndDate().isAfter(LocalDate.now())) {
                 throw new RuntimeException("Bu aşının koruyuculuk tarihi henüz bitmedi!");
             }
-            Vaccine savedVaccine = vaccineRepo.save(vaccineMapper.fromRequestWithAnimalId(vaccineRequest));
-            return vaccineMapper.asResponseWithAnimalId(savedVaccine);
+            Vaccine savedVaccine = vaccineRepo.save(vaccineMapper.asEntity(request));
+            return vaccineMapper.asResponse(savedVaccine);
         }
         throw new RuntimeException("Kod numaralı aşı daha önce kaydedilmiş!");
     }
 
-    public VaccineResponse update(Long id, VaccineRequest updatedVaccine) {
-        Optional<Vaccine> optionalExistingVaccine = vaccineRepo.findById(id);
+    public VaccineResponse update(Long id, VaccineRequest request) {
+        Optional<Vaccine> isVaccineExist = vaccineRepo.findById(id);
+        Optional<Vaccine> existingVaccineWithSameCode = Optional.ofNullable(vaccineRepo.findByCode(
+                request.getCode()
+        ));
 
-        if (optionalExistingVaccine.isEmpty()) {
+        if (isVaccineExist.isEmpty()) {
             throw new RuntimeException(id + "'li aşı bulunamadı!");
         }
-        Vaccine existingVaccine = optionalExistingVaccine.get();
-        // Check if there is another vaccine with the same code
-        Optional<Vaccine> existingVaccineWithSameCode = Optional.ofNullable(vaccineRepo.findByCode(updatedVaccine.getCode()));
+
         if (existingVaccineWithSameCode.isPresent() && !existingVaccineWithSameCode.get().getId().equals(id)) {
             throw new RuntimeException("Kod numaralı aşı daha önce kaydedilmiş!");
         }
-        vaccineMapper.update(existingVaccine, updatedVaccine); // Use the vaccineMapper to update the existing Vaccine entity
-        Vaccine updatedEntity = vaccineRepo.save(existingVaccine); // Save the updated vaccine entity
-        return vaccineMapper.asResponseWithAnimalId(updatedEntity); // Map the updated entity to the response
+
+        Vaccine vaccine = isVaccineExist.get();
+        vaccineMapper.update(vaccine, request); // Use the vaccineMapper to update the existing Vaccine entity
+        return vaccineMapper.asResponse((vaccineRepo.save(vaccine))); // Map the updated entity to the response
     }
 
     public void deleteById(Long id) {
         Optional<Vaccine> isVaccineExist = vaccineRepo.findById(id);
+
         if (isVaccineExist.isPresent()) {
             vaccineRepo.delete(isVaccineExist.get());
         } else {
             throw new RuntimeException(id + "'li aşı bulunamadı!");
         }
     }
-
-
 }

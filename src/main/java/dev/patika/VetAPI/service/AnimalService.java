@@ -20,11 +20,11 @@ public class AnimalService {
     public List<AnimalResponse> findAll(){return animalMapper.asOutput(animalRepo.findAll());}
 
     public AnimalResponse getById(Long id) {
-        return animalMapper.asOutput(animalRepo.findById(id).orElseThrow(() -> new RuntimeException(id + "'li hayvan bulunamadı!")));
+        return animalMapper.asResponse(animalRepo.findById(id).orElseThrow(() -> new RuntimeException(id + "'li hayvan bulunamadı!")));
     }
 
-    public AnimalResponse getByName(String name) {
-        return animalMapper.asOutput(animalRepo.findByName(name).orElseThrow(() -> new RuntimeException(name + "isimli hayvan bulunamadı!")));
+    public List<AnimalResponse> getByName(String name) {
+        return animalMapper.asOutput(animalRepo.findByName(name));
     }
 
     public List<AnimalResponse> findByCustomerId(Long customerId) {
@@ -32,28 +32,40 @@ public class AnimalService {
         return animalMapper.asOutput(animals);
     }
 
-    public AnimalResponse create(AnimalRequest animalRequest) {
-        Optional<Animal> isAnimalExist = animalRepo.findByName(animalRequest.getName());
+    public AnimalResponse create(AnimalRequest request) {
+        Optional<Animal> isAnimalExist = animalRepo.findByNameAndSpeciesAndBreed(
+                request.getName(),
+                request.getSpecies(),
+                request.getBreed()
+        );
 
         if (isAnimalExist.isEmpty()) {
-            Animal animalSaved = animalRepo.save(animalMapper.asEntity(animalRequest));
-            return animalMapper.asOutput(animalSaved);
+            Animal animalSaved = animalRepo.save(animalMapper.asEntity(request));
+            return animalMapper.asResponse(animalSaved);
         }
         throw new RuntimeException("Bu hayvan daha önce veritabanına kaydedilmiştir!");
     }
 
-    public AnimalResponse update(Long id, AnimalRequest animalRequest) {
+    public AnimalResponse update(Long id, AnimalRequest request) {
         Optional<Animal> isAnimalExist = animalRepo.findById(id);
+        Optional<Animal> isAnimalExistWithName = animalRepo.findByCustomerIdAndNameAndSpeciesAndBreed(
+                request.getCustomerId(),
+                request.getName(),
+                request.getSpecies(),
+                request.getBreed()
+        );
 
         if (isAnimalExist.isEmpty()) {
             throw new RuntimeException(id + "id'li hayvan veritabanında bulunamadı!");
         }
 
-        Animal existingAnimal = isAnimalExist.get();
-        animalMapper.update(existingAnimal, animalRequest);
+        if (isAnimalExistWithName.isPresent() && !isAnimalExistWithName.get().getId().equals(id)) {
+            throw new RuntimeException("Bu hayvan daha önce veritabanına kaydedilmiştir!");
+        }
 
-        Animal updatedAnimal = animalRepo.save(existingAnimal);
-        return animalMapper.asOutput(updatedAnimal);
+        Animal animal = isAnimalExist.get();
+        animalMapper.update(animal, request);
+        return animalMapper.asResponse((animalRepo.save(animal)));
     }
 
     public void deleteById(Long id) {
@@ -64,5 +76,9 @@ public class AnimalService {
         } else {
             throw new RuntimeException(id + "id'li hayvan veritabanında bulunamadı!");
         }
+    }
+
+    public List<AnimalResponse> findByCustomerName(String customerName) {
+        return animalMapper.asOutput(animalRepo.findByCustomerName(customerName));
     }
 }

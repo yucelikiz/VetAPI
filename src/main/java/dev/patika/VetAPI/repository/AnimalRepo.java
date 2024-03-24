@@ -1,7 +1,5 @@
 package dev.patika.VetAPI.repository;
 
-import dev.patika.VetAPI.dto.request.AnimalRequest;
-import dev.patika.VetAPI.dto.response.AnimalResponse;
 import dev.patika.VetAPI.entity.Animal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,9 +11,16 @@ import java.util.Optional;
 
 @Repository
 public interface AnimalRepo extends JpaRepository<Animal, Long> {
-    Optional<Animal> findByName(String name);
+    @Query("SELECT a FROM Animal a WHERE lower(name) LIKE lower(concat( :name, '%'))")
+    List<Animal> findByName(String name);
 
-    @Query("SELECT a FROM Animal a JOIN a.customer c WHERE c.id = :customerId")
-    List<Animal> findByCustomerId(@Param("customerId") Long customerId);
+    List<Animal> findByCustomerId(Long customerId);
+
+    Optional<Animal> findByNameAndSpeciesAndBreed(String name, String species, String breed);
+
+    Optional<Animal> findByCustomerIdAndNameAndSpeciesAndBreed (Long customerId, String name, String species, String breed);
+
+    @Query("SELECT a FROM Animal a JOIN a.customer c WHERE lower(c.name) = lower(:customerName)")
+    List<Animal> findByCustomerName(@Param("customerName") String customerName);
 
 }

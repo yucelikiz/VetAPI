@@ -14,8 +14,19 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface AppointmentMapper {
+
+    /* @Mapping(target = "doctor.id", source = "doctorId")
+    @Mapping(target = "animal.id", source = "animalId")
+    Appointment asEntity(AppointmentRequest request);
+    AppointmentResponse asResponse(Appointment appointment);
+    List<AppointmentResponse> asResponseList(List<Appointment> appointments);
+    void update(@MappingTarget Appointment entity, AppointmentRequest request); */
+
+
     AppointmentMapper INSTANCE = Mappers.getMapper(AppointmentMapper.class);
 
+    @Mapping(target = "doctor.id", source = "doctorId")
+    @Mapping(target = "animal.id", source = "animalId")
     @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart", qualifiedByName = "mapToLocalTime")
     @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd", qualifiedByName = "mapToLocalTime")
     Appointment asEntity(AppointmentRequest appointmentRequest);
@@ -26,8 +37,7 @@ public interface AppointmentMapper {
 
     List<AppointmentResponse> asResponseList(List<Appointment> appointments);
 
-    @Mapping(target = "doctorId", source = "doctor.id")
-    @Mapping(target = "animalId", source = "animal.id")
+
     @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart", qualifiedByName = "mapToLocalTime")
     @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd", qualifiedByName = "mapToLocalTime")
     @Named("asResponseWithIds")
@@ -47,5 +57,4 @@ public interface AppointmentMapper {
     default LocalTime mapToLocalTime(String time) {
         return time != null ? LocalTime.parse(time) : null;
     }
-
 }

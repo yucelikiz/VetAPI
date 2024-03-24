@@ -12,7 +12,7 @@ import java.util.List;
 public interface CustomerMapper {
     Customer asEntity(CustomerRequest customerRequest);
     CustomerResponse asOutput(Customer customer);
-    List<CustomerResponse> asOutput(List<Customer> customer);
+    List<CustomerResponse> asResponse(List<Customer> customerList);
 
     void update(@MappingTarget Customer entity, CustomerRequest request);
 }

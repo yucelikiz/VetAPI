@@ -27,6 +27,11 @@ public class DoctorService {
         return doctorMapper.asResponse(doctor);
     }
 
+    public DoctorResponse getByName(String name) {
+        Doctor doctor = doctorRepo.findByName(name).orElseThrow(()-> new RuntimeException(name + "isimli doktor bulunamadı!"));
+        return doctorMapper.asResponse(doctor);
+    }
+
     public DoctorResponse create(DoctorRequest doctorRequest) {
         Optional<Doctor> isDoctorExist = doctorRepo.findByName(doctorRequest.getName());
 

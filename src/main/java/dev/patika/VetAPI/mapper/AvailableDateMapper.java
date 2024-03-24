@@ -23,6 +23,5 @@ public interface AvailableDateMapper {
     @Mapping(target = "doctor.id", source = "doctorId")
     AvailableDate fromRequestWithDoctorId(AvailableDateRequest request);
 
-    @Mapping(target = "doctor", ignore = true)
     void update(@MappingTarget AvailableDate entity, AvailableDateRequest request);
 }

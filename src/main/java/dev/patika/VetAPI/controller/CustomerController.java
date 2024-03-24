@@ -28,7 +28,7 @@ public class CustomerController {
 
     @GetMapping("/getByName/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public CustomerResponse getByName(@PathVariable("name") String name) {return customerService.getByName(name);}
+    public List<CustomerResponse> getByName(@PathVariable("name") String name) {return customerService.getByName(name);}
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)

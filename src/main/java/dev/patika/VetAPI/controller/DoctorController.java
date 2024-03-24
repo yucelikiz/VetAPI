@@ -28,6 +28,12 @@ public class DoctorController {
         return doctorService.getById(id);
     }
 
+    @GetMapping("/name/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public DoctorResponse getByName(@PathVariable("name") String name) {
+        return doctorService.getByName(name);
+    }
+
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public DoctorResponse save(@RequestBody DoctorRequest request) {

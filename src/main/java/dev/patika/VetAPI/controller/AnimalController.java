@@ -2,7 +2,6 @@ package dev.patika.VetAPI.controller;
 
 import dev.patika.VetAPI.dto.request.AnimalRequest;
 import dev.patika.VetAPI.dto.response.AnimalResponse;
-import dev.patika.VetAPI.entity.Animal;
 import dev.patika.VetAPI.service.AnimalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,9 +30,15 @@ public class AnimalController {
         return animalService.findByCustomerId(customerId);
     }
 
+    @GetMapping("/getByCustomerName/{customerName}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AnimalResponse> findByCustomerName(@PathVariable("customerName") String customerName) {
+        return animalService.findByCustomerName(customerName);
+    }
+
     @GetMapping("/getByName/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public AnimalResponse getByName(@PathVariable("name") String name) {return animalService.getByName(name);}
+    public List<AnimalResponse> getByName(@PathVariable("name") String name) {return animalService.getByName(name);}
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
