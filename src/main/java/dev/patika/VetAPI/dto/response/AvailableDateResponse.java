@@ -1,5 +1,6 @@
 package dev.patika.VetAPI.dto.response;
 
+import dev.patika.VetAPI.entity.Doctor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,5 @@ import java.time.LocalDate;
 public class AvailableDateResponse {
     private Long id;
     private LocalDate availableDate;
-    private Long doctorId;
+    private Doctor doctor;
 }

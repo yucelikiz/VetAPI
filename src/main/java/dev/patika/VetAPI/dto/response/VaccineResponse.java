@@ -1,6 +1,7 @@
 package dev.patika.VetAPI.dto.response;
 
 import dev.patika.VetAPI.entity.Animal;
+import dev.patika.VetAPI.entity.Report;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

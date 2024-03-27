@@ -20,10 +20,6 @@ public interface VaccineMapper {
     VaccineResponse asResponse(Vaccine vaccine);
     List<VaccineResponse> asOutput(List<Vaccine> vaccines);
 
-    //@Mapping(target = "animalId", source = "animal.id")
-    //@Named("asResponseWithAnimalId")
-    //VaccineResponse asResponseWithAnimalId(Vaccine vaccine);
-
 
     void update(@MappingTarget Vaccine entity, VaccineRequest request);
 }

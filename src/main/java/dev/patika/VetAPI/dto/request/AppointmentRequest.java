@@ -14,8 +14,8 @@ import java.time.LocalTime;
 @Setter
 public class AppointmentRequest {
     private LocalDate appointmentDate;
-    private LocalTime appointmentTimeStart;
-    private LocalTime appointmentTimeEnd;
+    private String appointmentTimeStart;
+    private String appointmentTimeEnd;
     private Long doctorId;
     private Long animalId;
 }

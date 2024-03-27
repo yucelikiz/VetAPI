@@ -27,13 +27,15 @@ public class DoctorService {
         return doctorMapper.asResponse(doctor);
     }
 
-    public DoctorResponse getByName(String name) {
-        Doctor doctor = doctorRepo.findByName(name).orElseThrow(()-> new RuntimeException(name + "isimli doktor bulunamadı!"));
-        return doctorMapper.asResponse(doctor);
+    public List<DoctorResponse> getByName(String name) {
+        return doctorMapper.asResponseList(doctorRepo.findByName(name));
     }
 
     public DoctorResponse create(DoctorRequest doctorRequest) {
-        Optional<Doctor> isDoctorExist = doctorRepo.findByName(doctorRequest.getName());
+        Optional<Doctor> isDoctorExist = doctorRepo.findByNameAndMail(
+                doctorRequest.getName(),
+                doctorRequest.getMail()
+        );
 
         if (isDoctorExist.isEmpty()) {
             Doctor doctorSaved = doctorRepo.save(doctorMapper.asEntity(doctorRequest));

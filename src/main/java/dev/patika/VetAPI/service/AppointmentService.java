@@ -32,13 +32,13 @@ public class AppointmentService {
         return appointmentMapper.asResponseWithIds(appointment);
     }
 
-    public List<AppointmentResponse> getAppointmentsByDateRangeAndDoctors(LocalDate startDate, LocalDate endDate, List<Long> doctorIds) {
-        List<Appointment> appointments = appointmentRepo.findAppointmentsByDateRangeAndDoctors(startDate, endDate, doctorIds);
+    public List<AppointmentResponse> getAppointmentsByDateRangeAndDoctors(LocalDate startDate, LocalDate endDate, String doctorName) {
+        List<Appointment> appointments = appointmentRepo.findAppointmentsByDateRangeAndDoctors(startDate, endDate, doctorName);
         return appointmentMapper.asResponseList(appointments);
     }
 
-    public List<AppointmentResponse> getAppointmentsByDateRangeAndAnimals(LocalDate startDate, LocalDate endDate, List<Long> animalIds) {
-        List<Appointment> appointments = appointmentRepo.findAppointmentsByDateRangeAndAnimals(startDate, endDate, animalIds);
+    public List<AppointmentResponse> getAppointmentsByDateRangeAndAnimals(LocalDate startDate, LocalDate endDate, String animalName ) {
+        List<Appointment> appointments = appointmentRepo.findAppointmentsByDateRangeAndAnimals(startDate, endDate, animalName);
         return appointmentMapper.asResponseList(appointments);
     }
 

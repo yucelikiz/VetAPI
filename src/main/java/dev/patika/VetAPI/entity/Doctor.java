@@ -1,5 +1,6 @@
 package dev.patika.VetAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,8 +26,10 @@ public class Doctor {
     private String city;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Appointment> appointments;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<AvailableDate> availableDates;
 }

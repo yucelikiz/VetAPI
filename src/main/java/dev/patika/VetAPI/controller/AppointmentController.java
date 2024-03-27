@@ -34,8 +34,8 @@ public class AppointmentController {
     public List<AppointmentResponse> getAppointmentsByDateRangeAndDoctors(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-            @RequestParam List<Long> doctorIds) {
-        return appointmentService.getAppointmentsByDateRangeAndDoctors(startDate, endDate, doctorIds);
+            @RequestParam String doctorName) {
+        return appointmentService.getAppointmentsByDateRangeAndDoctors(startDate, endDate, doctorName);
     }
 
     @GetMapping("/getAppointmentsByDateRangeAndAnimals")
@@ -43,8 +43,8 @@ public class AppointmentController {
     public List<AppointmentResponse> getAppointmentsByDateRangeAndAnimals(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-            @RequestParam List<Long> animalIds) {
-        return appointmentService.getAppointmentsByDateRangeAndAnimals(startDate, endDate, animalIds);
+            @RequestParam String animalName) {
+        return appointmentService.getAppointmentsByDateRangeAndAnimals(startDate, endDate, animalName);
     }
 
     @PostMapping("/create")

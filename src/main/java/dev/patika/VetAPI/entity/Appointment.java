@@ -22,8 +22,8 @@ public class Appointment {
 
     @JoinColumn(name = "appointment_date")
     private LocalDate appointmentDate;
-    private LocalTime appointmentTimeStart;
-    private LocalTime appointmentTimeEnd;
+    private String appointmentTimeStart;
+    private String appointmentTimeEnd;
 
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.REMOVE)
     private Report report;

@@ -21,9 +21,13 @@ import java.util.List;
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "title")
     private String title;
+    @Column(name = "diagnosis")
     private String diagnosis;
+    @Column(name = "price")
     private Double price;
 
     @OneToOne(fetch = FetchType.LAZY)

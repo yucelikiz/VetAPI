@@ -13,58 +13,44 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ReportService {
-    private final ReportRepo reportRepository;
+    private final ReportRepo reportRepo;
     private final ReportMapper reportMapper;
-    private final AppointmentRepo appointmentRepository;
-    private final VaccineRepo vaccineRepository;
+    private final AppointmentRepo appointmentRepo;
 
     public List<ReportResponse> findAll() {
-        List<Report> reports = reportRepository.findAll();
-        return reportMapper.asResponseList(reports);
+        return reportMapper.asResponseList(reportRepo.findAll());
     }
 
     public ReportResponse getById(Long id) {
-        Report report = reportRepository.findById(id)
+        Report report = reportRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rapor bulunamadı!"));
         return reportMapper.asResponse(report);
     }
 
     public ReportResponse create(ReportRequest request) {
-        // Rapor için kullanılacak Appointment nesnesini bul
-        Appointment appointment = appointmentRepository.findById(request.getAppointmentId())
-                .orElseThrow(() -> new RuntimeException("Randevu bulunamadı!"));
+        Optional<Report> isReportExist = reportRepo.findByTitle(request.getTitle());
 
-        // Rapor için kullanılacak Vaccine nesnelerini bul
-        List<Vaccine> vaccines = vaccineRepository.findAllById(request.getVaccineIds());
-
-        // Yeni Rapor nesnesi oluştur
-        Report report = new Report();
-        report.setTitle(request.getTitle());
-        report.setDiagnosis(request.getDiagnosis());
-        report.setPrice(request.getPrice());
-        report.setAppointment(appointment);
-        report.setVaccines(vaccines);
-
-        // Raporu kaydet
-        Report savedReport = reportRepository.save(report);
-
-        // ReportResponse olarak dönüştür ve geri dön
-        return reportMapper.asResponse(savedReport);
+        if (isReportExist.isEmpty()) {
+            Report savedReport = reportRepo.save(reportMapper.asEntity(request));
+            return reportMapper.asResponse(savedReport);
+        }
+        throw new RuntimeException("Bu başlıkta bir rapor daha önce veritabanına kaydedilmiştir!");
     }
 
     public ReportResponse update(Long id, ReportRequest request) {
-        Report existingReport = reportRepository.findById(id)
+        Report existingReport = reportRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rapor bulunamadı!"));
         reportMapper.update(existingReport, request);
-        Report updatedReport = reportRepository.save(existingReport);
+        Report updatedReport = reportRepo.save(existingReport);
         return reportMapper.asResponse(updatedReport);
     }
 
     public void deleteById(Long id) {
-        reportRepository.deleteById(id);
+        reportRepo.deleteById(id);
     }
 }

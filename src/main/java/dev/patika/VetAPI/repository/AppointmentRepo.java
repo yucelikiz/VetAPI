@@ -22,23 +22,23 @@ public interface AppointmentRepo extends JpaRepository<Appointment,Long> {
     List<Appointment> findOverlappingAppointments(
             @Param("doctorId") Long doctorId,
             @Param("appointmentDate") LocalDate appointmentDate,
-            @Param("startTime") LocalTime startTime,
-            @Param("endTime") LocalTime endTime
+            @Param("startTime") String startTime,
+            @Param("endTime") String endTime
     );
 
     @Query("SELECT a FROM Appointment a LEFT JOIN FETCH a.doctor LEFT JOIN FETCH a.animal WHERE " +
-            "a.doctor.id IN :doctorIds " +
+            "LOWER(a.doctor.name) LIKE LOWER(CONCAT('%', :doctorName, '%')) " +
             "AND a.appointmentDate BETWEEN :startDate AND :endDate")
     List<Appointment> findAppointmentsByDateRangeAndDoctors(
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate,
-            @Param("doctorIds") List<Long> doctorIds);
+            @Param("doctorName") String doctorName);
 
     @Query("SELECT a FROM Appointment a LEFT JOIN FETCH a.doctor LEFT JOIN FETCH a.animal WHERE " +
             "a.appointmentDate BETWEEN :startDate AND :endDate " +
-            "AND a.animal.id IN :animalIds")
+            "AND LOWER(a.animal.name) LIKE LOWER(CONCAT('%', :animalName, '%'))")
     List<Appointment> findAppointmentsByDateRangeAndAnimals(
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate,
-            @Param("animalIds") List<Long> animalIds);
+            @Param("animalName") String animalName);
 }

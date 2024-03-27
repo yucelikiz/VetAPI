@@ -1,9 +1,7 @@
 package dev.patika.VetAPI.service;
 
 import dev.patika.VetAPI.dto.request.VaccineRequest;
-import dev.patika.VetAPI.dto.response.AnimalResponse;
 import dev.patika.VetAPI.dto.response.VaccineResponse;
-import dev.patika.VetAPI.entity.Animal;
 import dev.patika.VetAPI.entity.Vaccine;
 import dev.patika.VetAPI.mapper.AnimalMapper;
 import dev.patika.VetAPI.mapper.VaccineMapper;
@@ -40,9 +38,9 @@ public class VaccineService {
         return vaccineMapper.asOutput(vaccineList);
     }
 
-    public List<AnimalResponse> findAnimalsByVaccineProtectionEndDateBetween(LocalDate startDate, LocalDate endDate) {
-        List<Animal> animals = vaccineRepo.findAnimalsByVaccineProtectionEndDateBetween(startDate, endDate);
-        return animalMapper.asOutput(animals);
+    public List<VaccineResponse> findVaccineByProtectionEndDateBetween(LocalDate startDate, LocalDate endDate) {
+        List<Vaccine> vaccines = vaccineRepo.findVaccineByProtectionEndDateBetween(startDate, endDate);
+        return vaccineMapper.asOutput(vaccines);
     }
 
     public VaccineResponse create(VaccineRequest request) {

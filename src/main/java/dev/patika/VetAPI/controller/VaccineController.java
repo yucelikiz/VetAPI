@@ -1,7 +1,6 @@
 package dev.patika.VetAPI.controller;
 
 import dev.patika.VetAPI.dto.request.VaccineRequest;
-import dev.patika.VetAPI.dto.response.AnimalResponse;
 import dev.patika.VetAPI.dto.response.VaccineResponse;
 import dev.patika.VetAPI.service.VaccineService;
 import lombok.RequiredArgsConstructor;
@@ -27,16 +26,20 @@ public class VaccineController {
     @ResponseStatus(HttpStatus.OK)
     public VaccineResponse getById(@PathVariable("id") Long id) {return vaccineService.getById(id);}
 
+    @GetMapping("/name/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<VaccineResponse> getByName(@PathVariable("name") String name) {return vaccineService.getByName(name);}
+
     @GetMapping("/animal/{animalId}")
     @ResponseStatus(HttpStatus.OK)
     public List<VaccineResponse> getByAnimalId(@PathVariable("animalId") Long animalId) {return vaccineService.getByAnimalId(animalId);}
 
-    @GetMapping("/findAnimalsByVaccineProtectionEndDateBetween")
+    @GetMapping("/findVaccineByProtectionEndDateBetween")
     @ResponseStatus(HttpStatus.OK)
-    public List<AnimalResponse> findAnimalsByVaccineProtectionEndDateBetween(
+    public List<VaccineResponse> findVaccineByProtectionEndDateBetween(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return vaccineService.findAnimalsByVaccineProtectionEndDateBetween(startDate, endDate);
+        return vaccineService.findVaccineByProtectionEndDateBetween(startDate, endDate);
     }
 
     @PostMapping("/create")

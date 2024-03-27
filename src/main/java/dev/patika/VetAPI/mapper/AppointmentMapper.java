@@ -27,33 +27,30 @@ public interface AppointmentMapper {
 
     @Mapping(target = "doctor.id", source = "doctorId")
     @Mapping(target = "animal.id", source = "animalId")
-    @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart", qualifiedByName = "mapToLocalTime")
-    @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd", qualifiedByName = "mapToLocalTime")
     Appointment asEntity(AppointmentRequest appointmentRequest);
 
-    @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart", qualifiedByName = "mapToLocalTime")
-    @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd", qualifiedByName = "mapToLocalTime")
+    @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart")
+    @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd")
     AppointmentResponse asResponse(Appointment appointment);
 
     List<AppointmentResponse> asResponseList(List<Appointment> appointments);
 
 
-    @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart", qualifiedByName = "mapToLocalTime")
-    @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd", qualifiedByName = "mapToLocalTime")
+    @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart")
+    @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd")
     @Named("asResponseWithIds")
     AppointmentResponse asResponseWithIds(Appointment appointment);
 
     @Mapping(target = "doctor.id", source = "doctorId")
     @Mapping(target = "animal.id", source = "animalId")
-    @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart", qualifiedByName = "mapToLocalTime")
-    @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd", qualifiedByName = "mapToLocalTime")
+    @Mapping(target = "appointmentTimeStart", source = "appointmentTimeStart")
+    @Mapping(target = "appointmentTimeEnd", source = "appointmentTimeEnd")
     Appointment fromRequestWithIds(AppointmentRequest request);
 
     @Mapping(target = "doctor", ignore = true)
     @Mapping(target = "animal", ignore = true)
     void update(@MappingTarget Appointment entity, AppointmentRequest request);
 
-    @Named("mapToLocalTime")
     default LocalTime mapToLocalTime(String time) {
         return time != null ? LocalTime.parse(time) : null;
     }

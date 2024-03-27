@@ -12,7 +12,10 @@ import java.util.Optional;
 
 @Repository
 public interface DoctorRepo extends JpaRepository<Doctor, Long> {
-    Optional<Doctor> findByName(String name);
+    @Query("SELECT d FROM Doctor d WHERE lower(name) LIKE lower(concat('%', :name, '%'))")
+    List<Doctor> findByName(String name);
+
+    Optional<Doctor> findByNameAndMail(String name, String mail);
 
     Optional<Doctor> findAvailableDatesById(Long doctorId);
 }

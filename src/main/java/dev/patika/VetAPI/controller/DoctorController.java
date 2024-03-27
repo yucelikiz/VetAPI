@@ -30,7 +30,7 @@ public class DoctorController {
 
     @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public DoctorResponse getByName(@PathVariable("name") String name) {
+    public List <DoctorResponse> getByName(@PathVariable("name") String name) {
         return doctorService.getByName(name);
     }
 

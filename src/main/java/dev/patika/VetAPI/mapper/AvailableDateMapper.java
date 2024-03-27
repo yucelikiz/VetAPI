@@ -12,16 +12,17 @@ import java.util.List;
 public interface AvailableDateMapper {
     AvailableDateMapper INSTANCE = Mappers.getMapper(AvailableDateMapper.class);
 
+    @Mapping(target = "doctor.id", source = "doctorId")
     AvailableDate asEntity(AvailableDateRequest request);
     AvailableDateResponse asResponse(AvailableDate availableDate);
     List<AvailableDateResponse> asResponseList(List<AvailableDate> availableDates);
 
-    @Mapping(target = "doctorId", source = "doctor.id")
+   /* @Mapping(target = "doctorId", source = "doctor.id")
     @Named("asResponseWithDoctorId")
     AvailableDateResponse asResponseWithDoctorId(AvailableDate availableDate);
 
     @Mapping(target = "doctor.id", source = "doctorId")
-    AvailableDate fromRequestWithDoctorId(AvailableDateRequest request);
+    AvailableDate fromRequestWithDoctorId(AvailableDateRequest request);*/
 
     void update(@MappingTarget AvailableDate entity, AvailableDateRequest request);
 }

@@ -18,22 +18,24 @@ public class AvailableDateService {
     private final AvailableDateMapper availableDateMapper;
 
     public List<AvailableDateResponse> findAll() {
-        List<AvailableDate> availableDateList = availableDateRepo.findAll();
-        return availableDateMapper.asResponseList(availableDateList);
+        return availableDateMapper.asResponseList(availableDateRepo.findAll());
     }
 
     public AvailableDateResponse getById(Long id) {
         AvailableDate availableDate = availableDateRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException(id + "id'li uygun tarih bulunamadı!"));
-        return availableDateMapper.asResponseWithDoctorId(availableDate);
+        return availableDateMapper.asResponse(availableDate);
     }
 
     public AvailableDateResponse create(AvailableDateRequest request) {
-        Optional<AvailableDate> isAvailableDateExist = Optional.ofNullable(availableDateRepo.findByAvailableDateAndDoctorId(request.getAvailableDate(), request.getDoctorId()));
+        Optional<AvailableDate> isAvailableDateExist = Optional.ofNullable(availableDateRepo.findByAvailableDateAndDoctorId(
+                request.getAvailableDate(),
+                request.getDoctorId()
+        ));
 
         if (isAvailableDateExist.isEmpty()) {
-            AvailableDate savedAvailableDate = availableDateRepo.save(availableDateMapper.fromRequestWithDoctorId(request));
-            return availableDateMapper.asResponseWithDoctorId(savedAvailableDate);
+            AvailableDate savedAvailableDate = availableDateRepo.save(availableDateMapper.asEntity(request));
+            return availableDateMapper.asResponse(savedAvailableDate);
         }
         throw new RuntimeException("Bu tarih daha önce sisteme kayıt olmuştur!");
     }
@@ -48,7 +50,7 @@ public class AvailableDateService {
         AvailableDate existingAvailableDate = optionalExistingAvailableDate.get();
         availableDateMapper.update(existingAvailableDate, updatedAvailableDate); // Use the availableDateMapper to update the existing AvailableDate entity
         AvailableDate updatedEntity = availableDateRepo.save(existingAvailableDate); // Save the updated entity to the database
-        return availableDateMapper.asResponseWithDoctorId(updatedEntity); // Map the updated entity to the response
+        return availableDateMapper.asResponse(updatedEntity); // Map the updated entity to the response
     }
 
     public void deleteById(Long id) {

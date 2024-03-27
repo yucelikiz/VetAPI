@@ -16,5 +16,4 @@ public class ReportRequest {
     private String diagnosis;
     private Double price;
     private Long appointmentId;
-    private List<Long> vaccineIds;
 }
